@@ -1,6 +1,8 @@
 
 <?php
 
+@include_once('config.php');
+
 /******************* START IP LOCATIION ACTIONS *************************/
 
     // Get user IP address
@@ -33,13 +35,7 @@
     // Twitter API third party BS
     require_once 'TwitterAPIExchange.php';
 
-    // Twitter Keys
-    $settings = array(
-        'oauth_access_token' => "1703110339-tDZADf4FgkKHFHrpj32jcEQ29RDP7IO3orGL44W",
-        'oauth_access_token_secret' => "QKfGtfCk2tHbog40JGf253z2oMkvFlW3p1IHy2sLUVZFD",
-        'consumer_key' => "eHJ3RUTCUIxQGTxzmOcIBiqRH",
-        'consumer_secret' => "YEkOCN8JtW7CDKhcE8rKk6yTsWOTHC2AtEnUPldMjX9fDUhDm4"
-    );
+
 
 /******************* END IP LOCATIION ACTIONS ***************************/
 
@@ -79,13 +75,14 @@
 /******************* END TWITTER ACTIONS ********************************/
 
 $params = array(
-    'api_key'   => 'b3ab8a922c9450897ee2d7bd3f39c1b7',
+    'api_key'   => $flikr_key,
     'method'    => 'flickr.photos.getRecent',
     'ispublic'  => '0',
     'page'      => '1',
     'perpage'   => '1',
     'format'    => 'php_serial',
 );
+
 $encoded_params = array();
 foreach ($params as $k => $v){
     $encoded_params[] = urlencode($k).'='.urlencode($v);
@@ -127,8 +124,6 @@ if ($rsp_obj['stat'] == 'ok'){
         $query = $resultingTrend;
     }
 
-    $guardian_key = 'c5f9dfae-46d7-4ba3-a6ff-c9a9c11fcb93';
-
     $guardian = curl_init();
     curl_setopt_array($guardian, array(
         CURLOPT_RETURNTRANSFER => 1,
@@ -140,19 +135,24 @@ if ($rsp_obj['stat'] == 'ok'){
 
     $articleResults = json_decode($articles);
 
-    if ( $articleResults->response->total == 0 ) {
-        echo 'no results';
-    }
+    $max = count($articleResults->response->total);
 
-    // print_r($articleResults->response->results);
-    // print_r($articleResults->response->total);
-
-    $number = rand(0,8);
+    $number = rand(0,$max);
 
     $article_title = $articleResults->response->results[$number]->webTitle;
     $article_url = $articleResults->response->results[$number]->webUrl;
 
+    if ( $articleResults->response->total == 0 ) {
+        echo 'no results';
+    } else if ( $article_url == null ) {
+        echo '<script type="text/javascript"> console.log("It would appear no article was found :\'( ")); </script>';
+    }
+    
+    // print_r($articleResults->response->results);
+    // print_r($articleResults->response->total);
+
 ?>
+
 
 
 <!DOCTYPE html>
