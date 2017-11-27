@@ -30,8 +30,6 @@
     // break lat / long into seperate stings for use in WOEID
     $location = explode(",", $testLocation);
 
-    echo '<h1>Twittr Test</h1>';
-
     // Twitter API third party BS
     require_once 'TwitterAPIExchange.php';
 
@@ -162,6 +160,13 @@ if ($rsp_obj['stat'] == 'ok'){
 <style type="text/css">
 body {
     background-color: #f1e3a0;
+    font-family: monospace;
+    color: white;
+    font-weight: 300;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    min-height: 100vh;
 }
 
 body:after {
@@ -177,30 +182,51 @@ body:after {
     z-index: 10;
 }
 
+a {
+    color: white;
+}
+
 img {
     mix-blend-mode: darken;
     -webkit-filter: grayscale(100%) contrast(2);
     filter: grayscale(100%) contrast(2);
     opacity: .5;
+    width: 100%;
+}
+
+.image-wrap {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
     z-index: 2;
 }
+
+.content {
+    position: relative;
+    z-index: 20;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
 </style>
 
 </head>
 <body>
 
-<img src="<?php echo $bg; ?>">
+<div class="image-wrap">
+    <img src="<?php echo $bg; ?>">
+</div>
 
 <?php
 
-
-    echo "<h1>Hey there</h1>";
-    echo "Currently trending in your area is " . $resultingName . ", if you want to learn more check out <a href=\"" . $article_url . "\" target=\" _blank\">" . $article_title . "</a>";
-
+    echo '<div class="content">';
+        echo "<h1>Hey there</h1>";
+        echo "Currently trending in your area is " . $resultingName . ", if you want to learn more check out <a href=\"" . $article_url . "\" target=\" _blank\">" . $article_title . "</a>";
+    echo '</div>';
 
 ?>
 
